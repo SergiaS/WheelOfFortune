@@ -21,7 +21,7 @@ public class MainRestController {
 
     @PostMapping("/move")
     public GameTo checkRequestedLetter(@RequestBody Game game) {
-        log.info("Check letter {} by player {} - ", game.getAskedLetter(), game.getPlayerName());
+        log.info("Check letter {} by player {}", game.getAskedLetter(), game.getPlayerName());
         return repository.checkRequestedLetter(game);
     }
 }
