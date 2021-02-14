@@ -1,92 +1,28 @@
 package com.example.demo.to;
 
-import java.util.*;
-
 public class GameTo {
 
-    private String targetWord;
-    private String guessedWord;
+    private final String askedLetter;
+    private final String playerName;
 
-    private Set<Character> askedLettersSet;
-    private Queue<String> players;
-    private String playerOnAir;
-    private boolean isPlaying;
-
-    public GameTo() {
-        targetWord = setupRandomTargetWord();
-        guessedWord = targetWord.replaceAll("\\w", "_ ").trim();
-        askedLettersSet = new HashSet<>();
-        players = new ArrayDeque<>();
-        {
-            players.add("Bob");
-            players.add("Carl");
-            players.add("Tina");
-        }
-        playerOnAir = players.peek();
-        isPlaying = true;
+    public GameTo(String askedLetter, String playerName) {
+        this.askedLetter = askedLetter;
+        this.playerName = playerName;
     }
 
-    public String getTargetWord() {
-        return targetWord;
+    public String getAskedLetter() {
+        return askedLetter;
     }
 
-    public void setTargetWord(String targetWord) {
-        this.targetWord = targetWord;
-    }
-
-    public String getGuessedWord() {
-        return guessedWord;
-    }
-
-    public void setGuessedWord(String guessedWord) {
-        this.guessedWord = guessedWord;
-    }
-
-    public Set<Character> getAskedLettersSet() {
-        return askedLettersSet;
-    }
-
-    public void setAskedLettersSet(Set<Character> askedLettersSet) {
-        this.askedLettersSet = askedLettersSet;
-    }
-
-    public Queue<String> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(Queue<String> players) {
-        this.players = players;
-    }
-
-    public String getPlayerOnAir() {
-        return playerOnAir;
-    }
-
-    public void setPlayerOnAir(String playerOnAir) {
-        this.playerOnAir = playerOnAir;
-    }
-
-    public boolean isPlaying() {
-        return isPlaying;
-    }
-
-    public void setPlaying(boolean playing) {
-        isPlaying = playing;
-    }
-
-    public String setupRandomTargetWord() {
-        String[] words = {"banana", "cocaine", "badabum"};
-        return words[new Random().nextInt(words.length)];
+    public String getPlayerName() {
+        return playerName;
     }
 
     @Override
     public String toString() {
         return "GameTo{" +
-                "targetWord='" + targetWord + '\'' +
-                ", askedLettersSet=" + askedLettersSet +
-                ", players=" + players +
-                ", playerOnAir='" + playerOnAir + '\'' +
-                ", isPlaying=" + isPlaying +
+                "askedLetter='" + askedLetter + '\'' +
+                ", playerName='" + playerName + '\'' +
                 '}';
     }
 }

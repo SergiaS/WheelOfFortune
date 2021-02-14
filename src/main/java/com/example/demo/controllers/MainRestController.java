@@ -5,7 +5,7 @@ import com.example.demo.repository.InMemoryGameRepository;
 import com.example.demo.to.GameTo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,9 +19,9 @@ public class MainRestController {
         this.repository = repository;
     }
 
-    @PostMapping("/move")
-    public GameTo checkRequestedLetter(@RequestBody Game game) {
-        log.info("Check letter {} by player {}", game.getAskedLetter(), game.getPlayerName());
-        return repository.checkRequestedLetter(game);
+    @PutMapping("/move")
+    public Game checkRequestedLetter(@RequestBody GameTo gameTo) {
+        log.info("Check letter {} by player {}", gameTo.getAskedLetter(), gameTo.getPlayerName());
+        return repository.checkRequestedLetter(gameTo);
     }
 }

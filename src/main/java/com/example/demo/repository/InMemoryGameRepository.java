@@ -9,46 +9,46 @@ import java.util.Set;
 @Repository
 public class InMemoryGameRepository {
 
-    private final GameTo gameTo;
+    private final Game game;
 
     public InMemoryGameRepository() {
-        gameTo = new GameTo();
+        game = new Game();
     }
 
-    public GameTo checkRequestedLetter(Game game) {
-        String currentPlayerName = gameTo.getPlayers().peek();
-        gameTo.setPlayerOnAir(currentPlayerName);
+    public Game checkRequestedLetter(GameTo gameTo) {
+        String currentPlayerName = game.getPlayers().peek();
+        game.setPlayerOnAir(currentPlayerName);
 
-        if (!currentPlayerName.equals(game.getPlayerName())) {
+        if (!currentPlayerName.equals(gameTo.getPlayerName())) {
             throw new IllegalArgumentException();
         }
 
-        String askedLetter = game.getAskedLetter().toLowerCase();
-        Set<Character> askedLettersSet = gameTo.getAskedLettersSet();
+        String askedLetter = gameTo.getAskedLetter().toLowerCase();
+        Set<Character> askedLettersSet = game.getAskedLettersSet();
 
         if (!askedLettersSet.contains(askedLetter.charAt(0))) {
             askedLettersSet.add(askedLetter.charAt(0));
-            gameTo.setGuessedWord(writeGuessedLettersInTheWord());
-            if (!gameTo.getTargetWord().contains(askedLetter)) {
-                gameTo.getPlayers().add(gameTo.getPlayers().poll());
-                gameTo.setPlayerOnAir(gameTo.getPlayers().peek());
+            game.setGuessedWord(writeGuessedLettersInTheWord());
+            if (!game.getTargetWord().contains(askedLetter)) {
+                game.getPlayers().add(game.getPlayers().poll());
+                game.setPlayerOnAir(game.getPlayers().peek());
             }
         }
-        return this.gameTo;
+        return this.game;
     }
 
     public String writeGuessedLettersInTheWord() {
         StringBuilder res = new StringBuilder();
 
-        String targetWord = gameTo.getTargetWord();
+        String targetWord = game.getTargetWord();
         for (char c : targetWord.toCharArray()) {
-            if (gameTo.getAskedLettersSet().contains(c)) {
+            if (game.getAskedLettersSet().contains(c)) {
                 res.append(c).append(" ");
             } else {
                 res.append("_ ");
             }
         }
-        gameTo.setPlaying(res.toString().contains("_"));
+        game.setPlaying(res.toString().contains("_"));
         return String.valueOf(res).trim();
     }
 
