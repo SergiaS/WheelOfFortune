@@ -15,7 +15,7 @@ public class InMemoryGameRepository {
         game = new Game();
     }
 
-    public Game checkRequestedLetter(GameTo gameTo) {
+    public Game move(GameTo gameTo) {
         String currentPlayerName = game.getPlayers().peek();
         game.setPlayerOnAir(currentPlayerName);
 
@@ -37,7 +37,7 @@ public class InMemoryGameRepository {
         return this.game;
     }
 
-    public String writeGuessedLettersInTheWord() {
+    private String writeGuessedLettersInTheWord() {
         StringBuilder res = new StringBuilder();
 
         String targetWord = game.getTargetWord();
@@ -52,4 +52,15 @@ public class InMemoryGameRepository {
         return String.valueOf(res).trim();
     }
 
+    public Game getGameInfo() {
+        return game;
+    }
+
+    public void addNewPlayer(String name) {
+        game.getPlayers().add(name);
+    }
+
+    public void removePlayer(String name) {
+        game.getPlayers().remove(name);
+    }
 }
