@@ -2,11 +2,11 @@ package com.example.demo.util.exception;
 
 import java.util.Map;
 
-public class JsonInputException extends RuntimeException {
+public class ModelValidationException extends RuntimeException {
 
     private final Map<String, String> errorsFound;
 
-    public JsonInputException(String message, Map<String, String> errorsFound) {
+    public ModelValidationException(String message, Map<String, String> errorsFound) {
         super(message);
         this.errorsFound = errorsFound;
     }

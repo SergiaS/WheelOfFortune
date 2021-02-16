@@ -14,17 +14,25 @@ import javax.servlet.http.HttpServletRequest;
 public class ExceptionInterceptor {
     private static final Logger log = LoggerFactory.getLogger(ExceptionInterceptor.class);
 
-    @ExceptionHandler(value = PlayerNameException.class)
+    @ExceptionHandler(value = GameException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public ErrorInfo playerNameValidationError(HttpServletRequest req, PlayerNameException ce) {
-        String message = ce.getMessage();
+    public ErrorInfo gameValidationError(HttpServletRequest req, GameException gameException) {
+        String message = gameException.getMessage();
         log.info(message);
         return new ErrorInfo(req.getRequestURL(), HttpStatus.BAD_REQUEST.toString(), message);
     }
 
-    @ExceptionHandler(value = JsonInputException.class)
+    @ExceptionHandler(value = WinnerException.class)
+//    @ResponseStatus(value = HttpStatus.OK)
+    public String winnerError(WinnerException winnerException) {
+        String message = winnerException.getMessage();
+        log.info(message);
+        return winnerException.getMessage();
+    }
+
+    @ExceptionHandler(value = ModelValidationException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public MessageError jsonValidationError(JsonInputException e) {
+    public MessageError modelValidationError(ModelValidationException e) {
         log.info(e.getMessage());
         return new MessageError(e.getMessage(), e.getErrorsFound());
     }

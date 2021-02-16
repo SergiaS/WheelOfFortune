@@ -1,7 +1,7 @@
 package com.example.demo.util;
 
-import com.example.demo.util.exception.JsonInputException;
-import com.example.demo.util.exception.PlayerNameException;
+import com.example.demo.util.exception.GameException;
+import com.example.demo.util.exception.ModelValidationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
@@ -19,13 +19,13 @@ public class ValidationUtil {
         }
 
         if (!errorMap.isEmpty()) {
-            throw new JsonInputException(msg, errorMap);
+            throw new ModelValidationException(msg, errorMap);
         }
     }
 
     public static void playerNameValidation(String name, String msg) {
         if (name == null || name.equals("null") || name.isBlank()) {
-            throw new PlayerNameException(msg);
+            throw new GameException(msg);
         }
     }
 }
