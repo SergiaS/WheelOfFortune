@@ -31,6 +31,12 @@ public class MainRestController {
         return repository.getGameInfo();
     }
 
+    @GetMapping("/restart")
+    public Game restartGame() {
+        log.info("restartGame");
+        return repository.restartGame();
+    }
+
     @PostMapping(value = "/user/registration", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addNewPlayer(@RequestBody Map<String, String> body) {
         String name = body.get("name");

@@ -10,7 +10,7 @@ import java.util.Set;
 @Repository
 public class InMemoryGameRepository {
 
-    private final Game game;
+    private Game game;
 
     public InMemoryGameRepository() {
         game = new Game();
@@ -35,7 +35,11 @@ public class InMemoryGameRepository {
                 game.setPlayerOnAir(game.getPlayers().peek());
             }
         }
-        return this.game;
+        return game;
+    }
+
+    public Game restartGame() {
+        return game = new Game();
     }
 
     public Game getGameInfo() {
