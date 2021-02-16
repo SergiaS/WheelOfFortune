@@ -3,9 +3,12 @@ package com.example.demo.controllers;
 import com.example.demo.model.Game;
 import com.example.demo.repository.InMemoryGameRepository;
 import com.example.demo.to.GameTo;
+import com.example.demo.util.ValidationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -24,27 +27,32 @@ public class MainRestController {
 
     @GetMapping("/info")
     public Game getGameInfo() {
-        log.info("Get game info");
+        log.info("getGameInfo");
         return repository.getGameInfo();
     }
 
     @PostMapping(value = "/user/registration", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addNewPlayer(@RequestBody Map<String, String> body) {
         String name = body.get("name");
-        log.info("New player {} added to the game", name);
+        ValidationUtil.playerNameValidation(name, "Player name is invalid");
+        log.info("addNewPlayer - New player {} added to the game", name);
         repository.addNewPlayer(name);
     }
 
     @DeleteMapping(value = "/user/remove", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void removePlayer(@RequestBody Map<String, String> body) {
         String name = body.get("name");
-        log.info("Player {} removed from the game", name);
+        ValidationUtil.playerNameValidation(name, "Player name is invalid");
+        log.info("removePlayer - Player {} removed from the game", name);
         repository.removePlayer(name);
     }
 
     @PutMapping(value = "/move", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Game move(@RequestBody GameTo gameTo) {
-        log.info("Check letter {} by player {}", gameTo.getAskedLetter(), gameTo.getPlayerName());
+    public Game move(@Validated @RequestBody GameTo gameTo, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            ValidationUtil.jsonValidation(bindingResult, "Invalid JSON input! Player's move can't be execute!");
+        }
+        log.info("Player {} is asking the letter {}", gameTo.getPlayerName(), gameTo.getAskedLetter());
         return repository.move(gameTo);
     }
 }

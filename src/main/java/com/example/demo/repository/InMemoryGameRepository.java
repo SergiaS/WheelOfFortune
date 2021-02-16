@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.model.Game;
 import com.example.demo.to.GameTo;
+import com.example.demo.util.exception.PlayerNameException;
 import org.springframework.stereotype.Repository;
 
 import java.util.Set;
@@ -20,7 +21,8 @@ public class InMemoryGameRepository {
         game.setPlayerOnAir(currentPlayerName);
 
         if (!currentPlayerName.equals(gameTo.getPlayerName())) {
-            throw new IllegalArgumentException();
+            throw new PlayerNameException(
+                    String.format("Expected player %s to move, but found %s", currentPlayerName, gameTo.getPlayerName()));
         }
 
         String askedLetter = gameTo.getAskedLetter().toLowerCase();
