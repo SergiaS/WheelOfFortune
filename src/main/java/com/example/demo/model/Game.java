@@ -79,6 +79,20 @@ public class Game {
         return words[new Random().nextInt(words.length)];
     }
 
+    public String writeGuessedLettersInTheWord() {
+        StringBuilder res = new StringBuilder();
+
+        for (char c : targetWord.toCharArray()) {
+            if (askedLettersSet.contains(c)) {
+                res.append(c).append(" ");
+            } else {
+                res.append("_ ");
+            }
+        }
+        isPlaying = res.toString().contains("_");
+        return String.valueOf(res).trim();
+    }
+
     @Override
     public String toString() {
         return "GameTo{" +

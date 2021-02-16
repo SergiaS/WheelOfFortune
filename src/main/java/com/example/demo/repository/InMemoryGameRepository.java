@@ -25,33 +25,17 @@ public class InMemoryGameRepository {
                     String.format("Expected player %s to move, but found %s", currentPlayerName, gameTo.getPlayerName()));
         }
 
-        String askedLetter = gameTo.getAskedLetter().toLowerCase();
+        String askedLetter = gameTo.getAskedLetter();
         Set<Character> askedLettersSet = game.getAskedLettersSet();
-
         if (!askedLettersSet.contains(askedLetter.charAt(0))) {
             askedLettersSet.add(askedLetter.charAt(0));
-            game.setGuessedWord(writeGuessedLettersInTheWord());
+            game.setGuessedWord(game.writeGuessedLettersInTheWord());
             if (!game.getTargetWord().contains(askedLetter)) {
                 game.getPlayers().add(game.getPlayers().poll());
                 game.setPlayerOnAir(game.getPlayers().peek());
             }
         }
         return this.game;
-    }
-
-    private String writeGuessedLettersInTheWord() {
-        StringBuilder res = new StringBuilder();
-
-        String targetWord = game.getTargetWord();
-        for (char c : targetWord.toCharArray()) {
-            if (game.getAskedLettersSet().contains(c)) {
-                res.append(c).append(" ");
-            } else {
-                res.append("_ ");
-            }
-        }
-        game.setPlaying(res.toString().contains("_"));
-        return String.valueOf(res).trim();
     }
 
     public Game getGameInfo() {
