@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = MainRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class MainRestController {
+@RequestMapping(value = GameRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+public class GameRestController {
     static final String REST_URL = "/wheel/rest";
-    private static final Logger log = LoggerFactory.getLogger(MainRestController.class);
+    private static final Logger log = LoggerFactory.getLogger(GameRestController.class);
 
     private final InMemoryGameRepository repository;
 
-    public MainRestController(InMemoryGameRepository repository) {
+    public GameRestController(InMemoryGameRepository repository) {
         this.repository = repository;
     }
 

@@ -9,15 +9,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ValidationUtil {
+    private static final Map<String, String> errorMap = new HashMap<>();
 
     public static void jsonValidation(BindingResult result, String msg) {
-        Map<String, String> errorMap = new HashMap<>();
-
         for (FieldError fieldError : result.getFieldErrors()) {
             errorMap.computeIfPresent(fieldError.getField(), (k, v) -> v + "; " + fieldError.getDefaultMessage());
             errorMap.putIfAbsent(fieldError.getField(), fieldError.getDefaultMessage());
         }
-
         if (!errorMap.isEmpty()) {
             throw new ModelValidationException(msg, errorMap);
         }
