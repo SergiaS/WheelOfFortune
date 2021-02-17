@@ -15,15 +15,14 @@ public class ExceptionInterceptor {
     private static final Logger log = LoggerFactory.getLogger(ExceptionInterceptor.class);
 
     @ExceptionHandler(value = GameException.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
     public ErrorInfo gameValidationError(HttpServletRequest req, GameException gameException) {
         String message = gameException.getMessage();
         log.info(message);
-        return new ErrorInfo(req.getRequestURL(), HttpStatus.BAD_REQUEST.toString(), message);
+        return new ErrorInfo(req.getRequestURL(), HttpStatus.FORBIDDEN.toString(), message);
     }
 
     @ExceptionHandler(value = WinnerException.class)
-//    @ResponseStatus(value = HttpStatus.OK)
     public String winnerError(WinnerException winnerException) {
         String message = winnerException.getMessage();
         log.info(message);

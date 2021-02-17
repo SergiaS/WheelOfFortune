@@ -31,10 +31,10 @@ public class MainRestController {
         return repository.getGameInfo();
     }
 
-    @GetMapping("/restart")
-    public Game restartGame() {
-        log.info("restartGame");
-        return repository.restartGame();
+    @GetMapping(value = {"/start", "/restart"})
+    public Game startOrRestartGame() {
+        log.info("New game is started!");
+        return repository.startOrRestartGame();
     }
 
     @PostMapping(value = "/user/registration", consumes = MediaType.APPLICATION_JSON_VALUE)

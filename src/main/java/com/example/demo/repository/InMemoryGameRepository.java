@@ -13,11 +13,8 @@ public class InMemoryGameRepository {
 
     private Game game;
 
-    public InMemoryGameRepository() {
-        game = new Game();
-    }
-
     public Game move(GameTo gameTo) {
+        throwExceptionIfTheGameIsNotStarted(game);
         if (game.isPlaying()) {
             String currentPlayerName = game.getPlayers().peek();
             game.setPlayerOnAir(currentPlayerName);
@@ -42,27 +39,36 @@ public class InMemoryGameRepository {
             }
             return game;
         }
-        throw new GameException("The game already ends. Please restart the game.");
+        throw new GameException("The game already ends. Please restart the game - use /restart.");
     }
 
-    public Game restartGame() {
+    public Game startOrRestartGame() {
         return game = new Game();
     }
 
     public Game getGameInfo() {
+        throwExceptionIfTheGameIsNotStarted(game);
         return game;
     }
 
     public String addNewPlayer(String name) {
+        throwExceptionIfTheGameIsNotStarted(game);
         game.getPlayers().add(name);
         return "Player " + name + " is added to the game!";
     }
 
     public String removePlayer(String name) {
+        throwExceptionIfTheGameIsNotStarted(game);
         game.getPlayers().remove(name);
         if (game.getPlayerOnAir().equals(name)) {
             game.setPlayerOnAir(game.getPlayers().peek());
         }
         return "Player " + name + " is removed from the game!";
+    }
+
+    private void throwExceptionIfTheGameIsNotStarted(Game game) {
+        if (game == null) {
+            throw new GameException("The game is not started! Please, start the game first - use /start.");
+        }
     }
 }
