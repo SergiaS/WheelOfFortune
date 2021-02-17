@@ -33,7 +33,7 @@ public class InMemoryGameRepository {
                 askedLettersSet.add(askedLetter.charAt(0));
                 game.setGuessedWord(game.writeGuessedLettersInTheWord());
                 if (!game.getGuessedWord().contains("_")) {
-                    throw new WinnerException(String.format("%s is winner! Restart the game.", currentPlayerName));
+                    throw new WinnerException(String.format("%s is winner! If you want more - restart the game.", currentPlayerName));
                 }
                 if (!game.getTargetWord().contains(askedLetter)) {
                     game.getPlayers().add(game.getPlayers().poll());
@@ -53,11 +53,16 @@ public class InMemoryGameRepository {
         return game;
     }
 
-    public void addNewPlayer(String name) {
+    public String addNewPlayer(String name) {
         game.getPlayers().add(name);
+        return "Player " + name + " is added to the game!";
     }
 
-    public void removePlayer(String name) {
+    public String removePlayer(String name) {
         game.getPlayers().remove(name);
+        if (game.getPlayerOnAir().equals(name)) {
+            game.setPlayerOnAir(game.getPlayers().peek());
+        }
+        return "Player " + name + " is removed from the game!";
     }
 }

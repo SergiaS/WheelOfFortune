@@ -38,19 +38,19 @@ public class MainRestController {
     }
 
     @PostMapping(value = "/user/registration", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void addNewPlayer(@RequestBody Map<String, String> body) {
+    public String addNewPlayer(@RequestBody Map<String, String> body) {
         String name = body.get("name");
         ValidationUtil.playerNameValidation(name, "Player name is invalid");
         log.info("addNewPlayer - New player {} added to the game", name);
-        repository.addNewPlayer(name);
+        return repository.addNewPlayer(name);
     }
 
     @DeleteMapping(value = "/user/remove", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void removePlayer(@RequestBody Map<String, String> body) {
+    public String removePlayer(@RequestBody Map<String, String> body) {
         String name = body.get("name");
         ValidationUtil.playerNameValidation(name, "Player name is invalid");
         log.info("removePlayer - Player {} removed from the game", name);
-        repository.removePlayer(name);
+        return repository.removePlayer(name);
     }
 
     @PutMapping(value = "/move", consumes = MediaType.APPLICATION_JSON_VALUE)
