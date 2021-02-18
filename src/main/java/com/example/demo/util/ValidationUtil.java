@@ -21,6 +21,18 @@ public class ValidationUtil {
         }
     }
 
+    public static void gameIdValidation(String gameId, String msg) {
+        if (gameId == null || gameId.equals("null") || gameId.isBlank()) {
+            throw new GameException(msg);
+        }
+
+        for (char c : gameId.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                throw new GameException(msg);
+            }
+        }
+    }
+
     public static void playerNameValidation(String name, String msg) {
         if (name == null || name.equals("null") || name.isBlank()) {
             throw new GameException(msg);

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.UnexpectedTypeException;
 
 @RestControllerAdvice(annotations = RestController.class)
 public class ExceptionInterceptor {
@@ -34,5 +35,13 @@ public class ExceptionInterceptor {
     public MessageError modelValidationError(ModelValidationException e) {
         log.info(e.getMessage());
         return new MessageError(e.getMessage(), e.getErrorsFound());
+    }
+
+    @ExceptionHandler(value = UnexpectedTypeException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ErrorInfo typeVariableError(HttpServletRequest req) {
+        String message = "Unexpected type of variable!";
+        log.info(message);
+        return new ErrorInfo(req.getRequestURL(), HttpStatus.FORBIDDEN.toString(), message);
     }
 }

@@ -25,32 +25,43 @@ public class GameRestController {
         this.repository = repository;
     }
 
-    @GetMapping("/info")
-    public Game getGameInfo() {
-        log.info("getGameInfo");
-        return repository.getGameInfo();
+    @GetMapping(value = "/start")
+    public Game startGame() {
+        log.info("startGame");
+        return repository.startGame();
     }
 
-    @GetMapping(value = {"/start", "/restart"})
-    public Game startOrRestartGame() {
-        log.info("New game is started!");
-        return repository.startOrRestartGame();
+    @GetMapping("/info/{gameId}")
+    public Game getGameInfo(@PathVariable int gameId) {
+        log.info("getGameInfo of {}", gameId);
+        return repository.getGameInfo(gameId);
+    }
+
+    @GetMapping(value = "/restart/{gameId}")
+    public Game restartGame(@PathVariable String gameId) {
+        ValidationUtil.gameIdValidation(gameId, "Game id values is invalid");
+        log.info("restartGame number {}", gameId);
+        return repository.restartGame(gameId);
     }
 
     @PostMapping(value = "/user/registration", consumes = MediaType.APPLICATION_JSON_VALUE)
     public String addNewPlayer(@RequestBody Map<String, String> body) {
+        String gameId = body.get("gameId");
         String name = body.get("name");
+        ValidationUtil.gameIdValidation(gameId, "Game id values is invalid");
         ValidationUtil.playerNameValidation(name, "Player name is invalid");
-        log.info("addNewPlayer - New player {} added to the game", name);
-        return repository.addNewPlayer(name);
+        log.info("addNewPlayer - New player {} added to the game number {}", name, gameId);
+        return repository.addNewPlayer(gameId, name);
     }
 
     @DeleteMapping(value = "/user/remove", consumes = MediaType.APPLICATION_JSON_VALUE)
     public String removePlayer(@RequestBody Map<String, String> body) {
+        String gameId = body.get("gameId");
         String name = body.get("name");
+        ValidationUtil.gameIdValidation(gameId, "Game id values is invalid");
         ValidationUtil.playerNameValidation(name, "Player name is invalid");
-        log.info("removePlayer - Player {} removed from the game", name);
-        return repository.removePlayer(name);
+        log.info("removePlayer - Player {} removed from the game number {}", name, gameId);
+        return repository.removePlayer(gameId, name);
     }
 
     @PutMapping(value = "/move", consumes = MediaType.APPLICATION_JSON_VALUE)

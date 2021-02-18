@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.repository.InMemoryGameRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -28,21 +28,34 @@ class GameRestControllerTest {
 
     @BeforeEach
     void settings() {
-        repository.startOrRestartGame();
+        repository.startGame();
+    }
+
+    @AfterEach
+    void finish() {
+        repository.restartGame("1");
     }
 
     @Test
-    void getGameInfo() throws Exception {
+    void startGame() throws Exception {
         mockMvc
-                .perform(get(REST_URL + "/info"))
+                .perform(get(REST_URL + "/start"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
 
     @Test
-    void startOrRestartGame() throws Exception {
+    void getGameInfo() throws Exception {
         mockMvc
-                .perform(get(REST_URL + "/start"))
+                .perform(get(REST_URL + "/info/" + 1))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void restartGame() throws Exception {
+        mockMvc
+                .perform(get(REST_URL + "/restart/" + 1))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
@@ -52,7 +65,7 @@ class GameRestControllerTest {
         mockMvc
                 .perform(post(REST_URL + "/user/registration")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"Marta\"}"))
+                        .content("{\"gameId\":\"1\",\"name\":\"Marta\"}"))
                 .andExpect(status().isOk());
     }
 
@@ -61,7 +74,7 @@ class GameRestControllerTest {
         mockMvc
                 .perform(delete(REST_URL + "/user/remove")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"Bob\"}"))
+                        .content("{\"gameId\":\"1\",\"name\":\"Bob\"}"))
                 .andExpect(status().isOk());
     }
 
@@ -70,10 +83,11 @@ class GameRestControllerTest {
         mockMvc
                 .perform(put(REST_URL + "/move")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"askedLetter\":\"z\",\"playerName\":\"Bob\"}"))
+                        .content("{\"gameId\":\"1\",\"askedLetter\":\"z\",\"playerName\":\"Bob\"}"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.gameId", notNullValue()))
                 .andExpect(jsonPath("$.targetWord", containsString("a")))
                 .andExpect(jsonPath("$.players").isArray())
                 .andExpect(jsonPath("$.players", hasItem("Bob")));

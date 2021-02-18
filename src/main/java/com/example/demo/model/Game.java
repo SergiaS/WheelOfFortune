@@ -4,6 +4,7 @@ import java.util.*;
 
 public class Game {
 
+    private int gameId;
     private String targetWord;
     private String guessedWord;
 
@@ -24,6 +25,14 @@ public class Game {
         }
         playerOnAir = players.peek();
         isPlaying = true;
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
     }
 
     public String getTargetWord() {
@@ -95,8 +104,10 @@ public class Game {
 
     @Override
     public String toString() {
-        return "GameTo{" +
-                "targetWord='" + targetWord + '\'' +
+        return "Game{" +
+                "gameId=" + gameId +
+                ", targetWord='" + targetWord + '\'' +
+                ", guessedWord='" + guessedWord + '\'' +
                 ", askedLettersSet=" + askedLettersSet +
                 ", players=" + players +
                 ", playerOnAir='" + playerOnAir + '\'' +
