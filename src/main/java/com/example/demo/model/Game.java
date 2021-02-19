@@ -1,16 +1,32 @@
 package com.example.demo.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.*;
 
+@ApiModel(description = "Game - it's a basic model of the game")
 public class Game {
 
+    @ApiModelProperty(notes = "Id of the game")
     private int gameId;
+
+    @ApiModelProperty(notes = "Target word of the game")
     private String targetWord;
+
+    @ApiModelProperty(notes = "Shows what letters are guessed in target word")
     private String guessedWord;
 
+    @ApiModelProperty(notes = "Shows what letters was asked")
     private Set<Character> askedLettersSet;
+
+    @ApiModelProperty(notes = "Shows players list of current game")
     private Queue<String> players;
+
+    @ApiModelProperty(notes = "Shows current player move")
     private String playerOnAir;
+
+    @ApiModelProperty(notes = "Shows status of the game")
     private boolean isPlaying;
 
     public Game() {
