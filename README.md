@@ -19,7 +19,7 @@ http://localhost:8080/swagger-ui.html.
 Игра запускается по GET-запросу `/wheel/rest/start`. В ответе приходит JSON следующего формата:
 
 **Объект Game:**
-```
+```json
 {
     "gameId": 2,
     "targetWord": "cocaine",
@@ -59,7 +59,7 @@ http://localhost:8080/swagger-ui.html.
 Добавить нового игрока можно по адресу `/wheel/rest/user/registration`.
 Можно добавить любое кол-во игроков во время игры.
 На вход необходимо передать JSON формата:
-```
+```json
 {
     "gameId":"2",
     "name":"Mark"
@@ -71,7 +71,7 @@ http://localhost:8080/swagger-ui.html.
 ## Удаление игрока - /user/remove [DELETE]
 Удалить игрока можно по адресу `/wheel/rest/user/remove`.
 Необходимо передать JSON:
-```
+```json
 {
     "gameId":"2",
     "name":"Mark"
@@ -83,7 +83,7 @@ http://localhost:8080/swagger-ui.html.
 ## Ход игрока - /move [PUT]
 Ход игрока доступен по адресу `/wheel/rest/move`.
 Необходимо передать JSON:
-```
+```json
 {
     "gameId":"2",
     "askedLetter":"a",
