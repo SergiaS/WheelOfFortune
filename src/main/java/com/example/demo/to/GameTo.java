@@ -1,92 +1,52 @@
 package com.example.demo.to;
 
-import java.util.*;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+@ApiModel(description = "GameTo - it's DTO model")
 public class GameTo {
 
-    private String targetWord;
-    private String guessedWord;
+    @ApiModelProperty(notes = "Id of the game")
+    @NotNull
+    private final Integer gameId;
 
-    private Set<Character> askedLettersSet;
-    private Queue<String> players;
-    private String playerOnAir;
-    private boolean isPlaying;
+    @ApiModelProperty(notes = "Asked letter of playerName")
+    @Size(min = 1, max = 1, message = "Should be only 1 letter")
+    @Pattern(regexp = "[A-Za-z]", message = "Use only letters of any case")
+    private final String askedLetter;
 
-    public GameTo() {
-        targetWord = setupRandomTargetWord();
-        guessedWord = targetWord.replaceAll("\\w", "_ ").trim();
-        askedLettersSet = new HashSet<>();
-        players = new ArrayDeque<>();
-        {
-            players.add("Bob");
-            players.add("Carl");
-            players.add("Tina");
-        }
-        playerOnAir = players.peek();
-        isPlaying = true;
+    @ApiModelProperty(notes = "Name of the player which asks the letter")
+    @Pattern(regexp = "[A-Za-z]+\\s*", message = "Use only letters of any case and whitespace")
+    private final String playerName;
+
+    public GameTo(Integer gameId, String askedLetter, String playerName) {
+        this.gameId = gameId;
+        this.askedLetter = askedLetter.toLowerCase();
+        this.playerName = playerName;
     }
 
-    public String getTargetWord() {
-        return targetWord;
+    public Integer getId() {
+        return gameId;
     }
 
-    public void setTargetWord(String targetWord) {
-        this.targetWord = targetWord;
+    public String getAskedLetter() {
+        return askedLetter;
     }
 
-    public String getGuessedWord() {
-        return guessedWord;
-    }
-
-    public void setGuessedWord(String guessedWord) {
-        this.guessedWord = guessedWord;
-    }
-
-    public Set<Character> getAskedLettersSet() {
-        return askedLettersSet;
-    }
-
-    public void setAskedLettersSet(Set<Character> askedLettersSet) {
-        this.askedLettersSet = askedLettersSet;
-    }
-
-    public Queue<String> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(Queue<String> players) {
-        this.players = players;
-    }
-
-    public String getPlayerOnAir() {
-        return playerOnAir;
-    }
-
-    public void setPlayerOnAir(String playerOnAir) {
-        this.playerOnAir = playerOnAir;
-    }
-
-    public boolean isPlaying() {
-        return isPlaying;
-    }
-
-    public void setPlaying(boolean playing) {
-        isPlaying = playing;
-    }
-
-    public String setupRandomTargetWord() {
-        String[] words = {"banana", "cocaine", "badabum"};
-        return words[new Random().nextInt(words.length)];
+    public String getPlayerName() {
+        return playerName;
     }
 
     @Override
     public String toString() {
         return "GameTo{" +
-                "targetWord='" + targetWord + '\'' +
-                ", askedLettersSet=" + askedLettersSet +
-                ", players=" + players +
-                ", playerOnAir='" + playerOnAir + '\'' +
-                ", isPlaying=" + isPlaying +
+                "gameId=" + gameId +
+                ", askedLetter='" + askedLetter + '\'' +
+                ", playerName='" + playerName + '\'' +
                 '}';
     }
 }
